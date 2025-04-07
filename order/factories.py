@@ -10,13 +10,13 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Faker('pystr')
 
     class Meta:
-        models = User
+        model = User
 
 class OrderFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
     @factory.post_generation
-    def product(selfself, create, extracted, **kwargs):
+    def product(self, create, extracted, **kwargs):
         if not create:
             return
 

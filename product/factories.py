@@ -12,9 +12,9 @@ class CategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Category
 
-class ProductFactory(factory.django.djangoModelFactory):
+class ProductFactory(factory.django.DjangoModelFactory):
     price = factory.Faker('pyint')
-    category = factory.LazyAttribute(CategoryFactory)
+    # category = factory.LazyAttribute(CategoryFactory)
     title = factory.Faker('pystr')
 
     @factory.post_generation
@@ -22,9 +22,16 @@ class ProductFactory(factory.django.djangoModelFactory):
         if not create:
             return
 
-        if extracted:
-            for category in extracted:
-                self.category.add(category)
+        if extracted:  # Se categorias forem passadas, adicionamos elas
+            self.category.set(extracted)  # `.set()` para ManyToMany
+        else:  # Se nenhuma for passada, criamos uma por padrão
+            self.category.set([CategoryFactory()])
+
+        # if extracted:
+        #     for category in extracted:
+        #         self.category.set(category)
+        # else:  
+        #     self.category.set([CategoryFactory()])
 
     class Meta:
         model = Product
