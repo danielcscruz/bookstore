@@ -27,6 +27,10 @@ RUN apt-get update \
 # Install Poetry
 RUN pip install poetry
 
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
+
 # Set up project environment
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
