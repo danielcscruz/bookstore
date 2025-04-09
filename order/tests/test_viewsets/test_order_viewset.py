@@ -2,7 +2,7 @@ import json
 
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from rest_framework.authtoken.models import Token
+# from rest_framework.authtoken.models import Token
 
 
 from django.urls import reverse
@@ -19,8 +19,8 @@ class TestOrderViewSet(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
-        token = Token.objects.create(user=self.user)
-        token.save()
+        # token = Token.objects.create(user=self.user)
+        # token.save()
 
         self.category = CategoryFactory(title="technology")
         self.product = ProductFactory(
@@ -29,8 +29,8 @@ class TestOrderViewSet(APITestCase):
         self.order = OrderFactory(product=[self.product])
 
     def test_order(self):
-        token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        # token = Token.objects.get(user__username=self.user.username)
+        # self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
         response = self.client.get(reverse("order-list", kwargs={"version": "v1"}))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -51,8 +51,8 @@ class TestOrderViewSet(APITestCase):
         )
 
     def test_create_order(self):
-        token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        # token = Token.objects.get(user__username=self.user.username)
+        # self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
         user = UserFactory()
         product = ProductFactory()
         data = json.dumps({"products_id": [product.id], "user": user.id})
