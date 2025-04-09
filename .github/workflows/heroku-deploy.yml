@@ -29,6 +29,8 @@ jobs:
       - name: Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Verify Heroku CLI Installation
+        run: heroku --version
       - name: Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
@@ -42,13 +44,12 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-          # SQL_HOST: ${{ secrets.SQL_HOST }}
-          # SQL_DATABASE: ${{ secrets.SQL_DATABASE }}
-          # SQL_USER: ${{ secrets.SQL_USER }}
-          # SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          # SQL_ENGINE: $ {{ secrets.SQL_ENGINE }}
       - name: Add Heroku remote
         run: heroku git:remote --app $HEROKU_APP_NAME
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      - name: Debug Heroku Remote
+        run: heroku git:remote --app $HEROKU_APP_NAME --debug
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
       - name: Push to Heroku
